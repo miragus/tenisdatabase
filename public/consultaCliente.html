@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar clientes</title>
 </head>
+
 <body>
     <header>
         <h1>Consultar clientes</h1>
         <nav>
             <ul>
-                <li></li>
-                <li></li>
+                <li><a href="index.html">Página principal</a></li>
+                <li><a href="clientes.html">Cadastrar cliente</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <section>
             <h2>Clientes cadastrados:</h2>
-            <form action="formConsulta">
+            <form id="formConsulta">
                 <button type="submit">Atualizar Lista</button>
             </form>
             <table id="tabelaClientes">
@@ -29,17 +31,36 @@
                         <th>Data de nascimento</th>
                         <th>Celular</th>
                         <th>Endereço</th>
-                        <th>Sexo</th>
+                        <th>Gênero</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- CLIENTES APARECERAM AQUI-->
 
-                </tbody>
             </table>
         </section>
     </main>
-    <script src="consultaCliente.js"></script>
+    <section id="formEditSection" style="display: none;">
+        <h2>Editar cliente</h2>
+        <form id="formEdit">
+            <input type="hidden" id="editId">
+            <label for="editNome">Nome:</label>
+            <input type="text" id="editNome" required>
+            <label for="editBday">Data de nascimento:</label>
+            <input type="date" id="editBday" required>
+            <label for="editCelular">Celular:</label>
+            <input type="text" id="editCelular" required>
+            <label for="editEndereco">Endereço:</label>
+            <input type="text" id="editEndereco" required>
+            <label for="editGenero">Gênero:</label>
+            <input type="text" id="editGenero" required>
+            <button type="submit">Salvar</button>
+            <button type="button" id="cancelEdit">Cancelar</button>
+        </form>
+    </section>
     
+
+
+    <script src="consultaCliente.js"></script>
+
 </body>
+
 </html>

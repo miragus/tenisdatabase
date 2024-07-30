@@ -7,7 +7,8 @@ form.addEventListener('submit', async (e) => {
     const bday = document.getElementById('bday').value;
     const celular = document.getElementById('celular').value;
     const endereco = document.getElementById('endereco').value;
-    const sexokk = document.getElementById('sexo').value;
+    const genero = document.getElementById('genero').value;
+
 
     const response = await fetch('/clientes', {
         method: 'POST',
@@ -15,7 +16,7 @@ form.addEventListener('submit', async (e) => {
             //define o cabeçalho da requisição para JSON
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({nome, bday, celular, endereco, sexokk}),
+        body: JSON.stringify({nome, bday, celular, endereco, genero}),
     });
     const data = await response.json();
     console.log('Cliente cadastrado:', data);

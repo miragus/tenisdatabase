@@ -22,9 +22,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/clientes', async (req, res) => {
-    const {nome, bday, celular, endereco, sexo } = req.body;
-    const queryText = 'INSERT INTO clientes(nome, bday, celular, endereco, sexo) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-    const values = [nome, bday, celular, endereco, sexo];
+    const {nome, bday, celular, endereco, genero } = req.body;
+    const queryText = 'INSERT INTO clientes(nome, bday, celular, endereco, genero) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    const values = [nome, bday, celular, endereco, genero];
 
     try {
         const result = await pool.query(queryText, values);
@@ -46,4 +46,57 @@ app.get('/clientes', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
+});
+
+app.delete('/clientes/:id', async (req, res) => {
+    const { id } = req.params;
+    const queryText = 'DELETE FROM clientes WHERE id = $1 RETURNING *';
+
+    try {
+        const result = await pool.query(queryText, [id]);
+        if (result.rowCount === 0) {
+            res.status(404).send('Cliente não encontrado');
+        } else {
+            res.status(200).send('Cliente deletado com sucesso');
+        }
+    } catch (err) {
+        console.log('Erro ao deletar cliente:', err);
+        res.status(500).send('Erro interno ao processar a solicitação');
+    }
+});
+
+app.get('/clientes/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM clientes WHERE id = $1', [id]);
+        if (result.rowCount === 0) {
+            res.status(404).send('Cliente não encontrado');
+        } else {
+            res.status(200).json(result.rows[0]);
+        }
+    } catch (err) {
+        console.log('Erro ao buscar cliente:', err);
+        res.status(500).send('Erro interno ao processar a solicitação');
+    }
+});
+
+app.put('/clientes/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome, bday, celular, endereco, genero } = req.body;
+    const queryText = `
+        UPDATE clientes
+        SET nome = $1, bday = $2, celular = $3, endereco = $4, genero = $5
+        WHERE id = $6 RETURNING *`;
+
+    try {
+        const result = await pool.query(queryText, [nome, bday, celular, endereco, genero, id]);
+        if (result.rowCount === 0) {
+            res.status(404).send('Cliente não encontrado');
+        } else {
+            res.status(200).json(result.rows[0]);
+        }
+    } catch (err) {
+        console.log('Erro ao atualizar cliente:', err);
+        res.status(500).send('Erro interno ao processar a solicitação');
+    }
 });
